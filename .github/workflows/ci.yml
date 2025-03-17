@@ -56,7 +56,7 @@ jobs:
 
       - name: Prepare database
         run: |
-          export DATABASE_URL="postgresql://symfony:symfony@localhost:5439/concert_service?serverVersion=15&charset=utf8"
+          export DATABASE_URL="postgresql://symfony:symfony@localhost:5439/concert_service_test?serverVersion=15&charset=utf8"
           php bin/console doctrine:database:create --if-not-exists --env=test
 
       - name: Check migrations status
