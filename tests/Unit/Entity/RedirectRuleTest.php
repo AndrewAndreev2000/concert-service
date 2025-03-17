@@ -12,6 +12,9 @@ class RedirectRuleTest extends TestCase
     public function testGettersAndSetters(): void
     {
         $redirectRule = new RedirectRule();
+
+        self::assertNull($redirectRule->getId());
+
         $redirectRule->setRedirectUrl('https://example.com');
         self::assertEquals('https://example.com', $redirectRule->getRedirectUrl());
 

@@ -12,6 +12,9 @@ class RuleTest extends TestCase
     {
         $rule = self::getMockForAbstractClass(Rule::class);
         $redirectRule = new RedirectRule();
+
+        self::assertNull($rule->getId());
+
         $rule->setRedirectRule($redirectRule);
         self::assertSame($redirectRule, $rule->getRedirectRule());
     }

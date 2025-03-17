@@ -11,6 +11,8 @@ class CountryTest extends TestCase
     {
         $country = new Country();
 
+        self::assertNull($country->getId());
+
         $country->setName('Russia');
         self::assertEquals('Russia', $country->getName());
 

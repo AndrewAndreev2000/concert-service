@@ -22,7 +22,6 @@ final class Version20250317080544 extends AbstractMigration
         $this->addSql('CREATE TABLE app_city (id SERIAL NOT NULL, region_id INT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_2875279498260155 ON app_city (region_id)');
         $this->addSql('CREATE TABLE app_concert (id SERIAL NOT NULL, name VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE UNIQUE INDEX uniq_app_concert_slug ON app_concert (slug)');
         $this->addSql('CREATE TABLE app_country (id SERIAL NOT NULL, name VARCHAR(255) NOT NULL, code VARCHAR(2) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX uniq_app_country_code ON app_country (code)');
         $this->addSql('CREATE TABLE app_redirect_rule (id SERIAL NOT NULL, concert_id INT NOT NULL, redirect_url VARCHAR(255) NOT NULL, PRIMARY KEY(id))');

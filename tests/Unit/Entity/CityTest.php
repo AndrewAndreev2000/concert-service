@@ -12,8 +12,10 @@ class CityTest extends TestCase
     {
         $city = new City();
 
-        $city->setName('Moscow');
-        self::assertEquals('Moscow', $city->getName());
+        self::assertNull($city->getId());
+
+        $city->setName('Test');
+        self::assertEquals('Test', $city->getName());
 
         $region = new Region();
         $city->setRegion($region);

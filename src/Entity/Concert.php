@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: self::TABLE_NAME)]
-#[ORM\UniqueConstraint(name: 'uniq_app_concert_slug', columns: ['slug'])]
 class Concert
 {
     public const TABLE_NAME = 'app_concert';
