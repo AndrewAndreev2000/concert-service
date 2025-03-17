@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  app:
+    image: php:8.4-fpm
+    container_name: app
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    networks:
+      - symfony-network
+    command: >
+      bash -c "
+        apt-get update && 
+        apt-get install -y libpq-dev && 
+        docker-php-ext-install pdo_pgsql && 
+        php-fpm
+      "
+
+  database:
+    image: postgres:15
+    container_name: postgresql
+    environment:
+      POSTGRES_DB: concert_service
+      POSTGRES_USER: symfony
+      POSTGRES_PASSWORD: symfony
+    ports:
+      - "5439:5432"
+    networks:
+      - symfony-network
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - symfony-network
+
+networks:
+  symfony-network:
+    driver: bridge
