@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      database:
+        image: postgres:15
+        env:
+          POSTGRES_DB: concert_service
+          POSTGRES_USER: symfony
+          POSTGRES_PASSWORD: symfony
+        ports:
+          - 5439:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, xdebug
+          tools: composer:v2
+          coverage: xdebug
+
+      - name: Install dependencies
+        run: |
+          composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Generate JWT keys
+        run: |
+          mkdir -p config/jwt
+          openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096 -pass pass:otus
+          openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout -passin pass:otus
+
+      - name: Wait for DB to be ready
+        run: |
+          echo "Waiting for db to be ready..."
+          sleep 10
+
+      - name: Prepare database
+        run: |
+          export DATABASE_URL="postgresql://symfony:symfony@localhost:5439/concert_service?serverVersion=15&charset=utf8"
+          php bin/console doctrine:database:create --if-not-exists --env=test
+
+      - name: Check migrations status
+        run: |
+          export DATABASE_URL="postgresql://symfony:symfony@localhost:5439/concert_service?serverVersion=15&charset=utf8"
+          php bin/console doctrine:migrations:status --env=test
+
+      - name: Apply migrations if available
+        run: |
+          export DATABASE_URL="postgresql://symfony:symfony@localhost:5439/concert_service?serverVersion=15&charset=utf8"
+          php bin/console doctrine:migrations:migrate --no-interaction --env=test || true
+
+      - name: Run tests with coverage
+        run: |
+          mkdir -p var/coverage
+          ./vendor/bin/simple-phpunit --coverage-clover coverage/clover.xml --coverage-html coverage/html
+
+      - name: Check coverage directory
+        run: |
+          ls -la coverage
+
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
