@@ -67,13 +67,6 @@ class RedirectRule
         return $this->rules;
     }
 
-    public function setRules(Collection $rules): static
-    {
-        $this->rules = $rules;
-
-        return $this;
-    }
-
     public function addRule(Rule $rule): static
     {
         if (!$this->rules->contains($rule)) {
