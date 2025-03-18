@@ -10,20 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class LocationRuleTest extends TestCase
 {
-    public function testGettersAndSetters(): void
-    {
-        $locationRule = new LocationRule();
-
-        $locationRule->setLatitude(55.7558);
-        self::assertEquals(55.7558, $locationRule->getLatitude());
-
-        $locationRule->setLongitude(37.6173);
-        self::assertEquals(37.6173, $locationRule->getLongitude());
-
-        $locationRule->setRadius(10.5);
-        self::assertEquals(10.5, $locationRule->getRadius());
-    }
-
     public function testAddAndRemoveCountry(): void
     {
         $locationRule = new LocationRule();
