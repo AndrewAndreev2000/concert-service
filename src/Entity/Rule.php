@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: Types::STRING)]
 #[ORM\DiscriminatorMap([
-    'time' => TimeRule::class,
     'date_time' => DateTimeRule::class,
     'location' => LocationRule::class,
 ])]

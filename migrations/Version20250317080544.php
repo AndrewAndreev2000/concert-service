@@ -28,7 +28,7 @@ final class Version20250317080544 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_83C3141083C97B2E ON app_redirect_rule (concert_id)');
         $this->addSql('CREATE TABLE app_region (id SERIAL NOT NULL, country_id INT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_EA619CF6F92F3E70 ON app_region (country_id)');
-        $this->addSql('CREATE TABLE app_rule (id SERIAL NOT NULL, redirectRule INT NOT NULL, type VARCHAR(255) NOT NULL, start_time TIME(0) WITHOUT TIME ZONE DEFAULT NULL, end_time TIME(0) WITHOUT TIME ZONE DEFAULT NULL, start_date_time TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, end_date_time TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, latitude DOUBLE PRECISION DEFAULT NULL, longitude DOUBLE PRECISION DEFAULT NULL, radius DOUBLE PRECISION DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE app_rule (id SERIAL NOT NULL, redirectRule INT NOT NULL, type VARCHAR(255) NOT NULL, start_date_time TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, end_date_time TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_43F6896CC88C6231 ON app_rule (redirectRule)');
         $this->addSql('CREATE TABLE app_location_rule_country (location_rule_id INT NOT NULL, country_id INT NOT NULL, PRIMARY KEY(location_rule_id, country_id))');
         $this->addSql('CREATE INDEX IDX_CA1CB7439A0B10F5 ON app_location_rule_country (location_rule_id)');

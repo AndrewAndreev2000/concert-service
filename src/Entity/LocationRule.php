@@ -10,15 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class LocationRule extends Rule
 {
-    #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    protected ?float $latitude = null;
-
-    #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    protected ?float $longitude = null;
-
-    #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    protected ?float $radius = null;
-
     #[ORM\ManyToMany(targetEntity: Country::class)]
     #[ORM\JoinTable(name: 'app_location_rule_country')]
     private Collection $countries;
@@ -36,42 +27,6 @@ class LocationRule extends Rule
         $this->countries = new ArrayCollection();
         $this->regions = new ArrayCollection();
         $this->cities = new ArrayCollection();
-    }
-
-    public function getLatitude(): ?float
-    {
-        return $this->latitude;
-    }
-
-    public function setLatitude(?float $latitude): static
-    {
-        $this->latitude = $latitude;
-
-        return $this;
-    }
-
-    public function getLongitude(): ?float
-    {
-        return $this->longitude;
-    }
-
-    public function setLongitude(?float $longitude): static
-    {
-        $this->longitude = $longitude;
-
-        return $this;
-    }
-
-    public function getRadius(): ?float
-    {
-        return $this->radius;
-    }
-
-    public function setRadius(?float $radius): static
-    {
-        $this->radius = $radius;
-
-        return $this;
     }
 
     public function getCountries(): Collection
