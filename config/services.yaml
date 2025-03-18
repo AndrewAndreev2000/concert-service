@@ -22,3 +22,38 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Middleware\SmartLinkMiddleware:
+        arguments:
+            $kernel: '@http_kernel'
+            $redirectService: '@app.redirect_service'
+        tags:
+            - { name: kernel.middleware, priority: 10 }
+
+    app.rule_chain_handler:
+        class: App\Handler\RuleChainHandler
+        arguments:
+            $handlers: !tagged_iterator app.rule_handler
+
+    app.location_rule_handler:
+        class: App\Handler\LocationRuleHandler
+        tags:
+            - { name: app.rule_handler }
+
+    app.date_time_rule_handler:
+        class: App\Handler\DateTimeRuleHandler
+        tags:
+            - { name: app.rule_handler }
+
+    app.redirect_service:
+        class: App\Service\RedirectService
+        arguments:
+            $redirectors: !tagged_iterator app.redirector
+
+    app.service_redirector:
+        class: App\Service\ConcertRedirector
+        arguments:
+            $doctrine: '@doctrine'
+            $ruleChainHandler: '@app.rule_chain_handler'
+        tags:
+            - { name: app.redirector }

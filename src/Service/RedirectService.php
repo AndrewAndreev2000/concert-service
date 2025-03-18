@@ -6,14 +6,26 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RedirectService
 {
+    /**
+     * @param iterable<RedirectorInterface> $redirectors
+     */
+    public function __construct(
+        private iterable $redirectors,
+    ) {
+    }
+
     public function getRedirectUrl(Request $request): ?string
     {
-        $concertSlug = $request->attributes->get('concertSlug');
+        foreach ($this->redirectors as $redirector) {
+            if ($redirector->supports($request)) {
+                $url = $redirector->getRedirectUrl($request);
 
-        if (!$concertSlug) {
-            return null;
+                if ($url) {
+                    return $url;
+                }
+            }
         }
 
-        return '';
+        return null;
     }
 }

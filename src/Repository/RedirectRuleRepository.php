@@ -15,8 +15,8 @@ class RedirectRuleRepository extends EntityRepository
      */
     public function findByConcertSlug(string $concertSlug): array
     {
-        $qb = $this->createQueryBuilder('rr')
-            ->join('rr.concert', 'concert')
+        $qb = $this->createQueryBuilder('redirect_rule')
+            ->join('redirect_rule.concert', 'concert')
             ->andWhere('concert.slug = :slug')
             ->setParameter('slug', $concertSlug);
 
