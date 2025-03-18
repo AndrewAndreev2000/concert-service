@@ -32,6 +32,7 @@ class DateTimeRuleHandlerTest extends TestCase
         $context = new RuleContext($request);
         $context->setTimezone('Europe/Moscow');
 
+        self::assertTrue($handler->supports($dateTimeRule));
         self::assertNotNull($handler->handle($dateTimeRule, $context));
 
         $dateTimeRule->setStartDateTime(new DateTime('2025-01-01 00:00:00', new DateTimeZone('UTC')));
