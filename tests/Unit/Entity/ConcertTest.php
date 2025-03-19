@@ -2,6 +2,7 @@
 
 namespace App\Tests\Unit\Entity;
 
+use App\Entity\City;
 use App\Entity\Concert;
 use App\Entity\RedirectRule;
 use PHPUnit\Framework\TestCase;
@@ -19,6 +20,10 @@ class ConcertTest extends TestCase
 
         $concert->setSlug('Test');
         self::assertEquals('Test', $concert->getSlug());
+
+        $city = new City();
+        $concert->setCity($city);
+        self::assertSame($city, $concert->getCity());
     }
 
     public function testAddAndRemoveRedirectRule(): void
