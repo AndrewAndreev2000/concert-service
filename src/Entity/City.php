@@ -19,10 +19,6 @@ class City
     #[ORM\Column(type: Types::STRING, length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(targetEntity: Region::class, inversedBy: 'cities')]
-    #[ORM\JoinColumn(name: 'region_id', referencedColumnName: 'id', nullable: false)]
-    private ?Region $region = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -33,21 +29,9 @@ class City
         return $this->name;
     }
 
-    public function setName(?string $name): static
+    public function setName(?string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getRegion(): ?Region
-    {
-        return $this->region;
-    }
-
-    public function setRegion(?Region $region): static
-    {
-        $this->region = $region;
 
         return $this;
     }

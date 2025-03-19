@@ -3,7 +3,6 @@
 namespace App\Tests\Unit\Entity;
 
 use App\Entity\City;
-use App\Entity\Region;
 use PHPUnit\Framework\TestCase;
 
 class CityTest extends TestCase
@@ -16,9 +15,5 @@ class CityTest extends TestCase
 
         $city->setName('Test');
         self::assertEquals('Test', $city->getName());
-
-        $region = new Region();
-        $city->setRegion($region);
-        self::assertSame($region, $city->getRegion());
     }
 }

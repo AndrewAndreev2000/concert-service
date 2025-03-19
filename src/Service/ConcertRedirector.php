@@ -16,7 +16,7 @@ class ConcertRedirector implements RedirectorInterface
     ) {
     }
 
-    public function supports(Request $request): bool
+    public function isApplicable(Request $request): bool
     {
         return !!$request->attributes->get('concertSlug');
     }

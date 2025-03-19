@@ -24,6 +24,10 @@ class Concert
     #[ORM\Column(type: Types::STRING, unique: true)]
     protected ?string $slug = null;
 
+    #[ORM\ManyToOne(targetEntity: City::class)]
+    #[ORM\JoinColumn(name: 'city_id', referencedColumnName: 'id', nullable: false)]
+    private ?City $city = null;
+
     #[ORM\OneToMany(targetEntity: RedirectRule::class, mappedBy: 'concert', cascade: ['persist', 'remove'])]
     protected Collection $redirectRules;
 
@@ -42,7 +46,7 @@ class Concert
         return $this->name;
     }
 
-    public function setName(?string $name): static
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -54,9 +58,21 @@ class Concert
         return $this->slug;
     }
 
-    public function setSlug(?string $slug): static
+    public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }
@@ -66,7 +82,7 @@ class Concert
         return $this->redirectRules;
     }
 
-    public function addRedirectRule(RedirectRule $redirectRule): static
+    public function addRedirectRule(RedirectRule $redirectRule): self
     {
         if (!$this->redirectRules->contains($redirectRule)) {
             $this->redirectRules->add($redirectRule);
@@ -76,7 +92,7 @@ class Concert
         return $this;
     }
 
-    public function removeRedirectRule(RedirectRule $redirectRule): static
+    public function removeRedirectRule(RedirectRule $redirectRule): self
     {
         if ($this->redirectRules->contains($redirectRule)) {
             $this->redirectRules->removeElement($redirectRule);

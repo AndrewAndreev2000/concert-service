@@ -6,23 +6,21 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RedirectService
 {
-    /**
-     * @param iterable<RedirectorInterface> $redirectors
-     */
     public function __construct(
-        private iterable $redirectors,
-    ) {
+        private RedirectorInterface $redirector,
+    )
+    {
     }
 
     public function getRedirectUrl(Request $request): ?string
     {
-        foreach ($this->redirectors as $redirector) {
-            if ($redirector->supports($request)) {
-                $url = $redirector->getRedirectUrl($request);
+        $redirector = $this->redirector;
 
-                if ($url) {
-                    return $url;
-                }
+        if ($redirector->isApplicable($request)) {
+            $url = $redirector->getRedirectUrl($request);
+
+            if (null !== $url) {
+                return $url;
             }
         }
 

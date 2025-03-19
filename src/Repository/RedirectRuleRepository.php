@@ -8,9 +8,6 @@ use Doctrine\ORM\EntityRepository;
 class RedirectRuleRepository extends EntityRepository
 {
     /**
-     * Находит правила редиректа для конкретного концерта по его slug.
-     *
-     * @param string $concertSlug
      * @return RedirectRule[]
      */
     public function findByConcertSlug(string $concertSlug): array

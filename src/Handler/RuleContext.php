@@ -2,12 +2,15 @@
 
 namespace App\Handler;
 
+use App\Entity\City;
 use Symfony\Component\HttpFoundation\Request;
 
 class RuleContext
 {
     protected ?string $timezone = null;
-    protected ?string $concertSlug;
+    protected ?string $concertSlug = null;
+
+    protected ?City $city = null;
 
     public function __construct(
         private readonly Request $request,
@@ -20,7 +23,7 @@ class RuleContext
         return $this->timezone;
     }
 
-    public function setTimezone(?string $timezone): static
+    public function setTimezone(?string $timezone): self
     {
         $this->timezone = $timezone;
 
@@ -32,9 +35,21 @@ class RuleContext
         return $this->concertSlug;
     }
 
-    public function setConcertSlug(?string $concertSlug): static
+    public function setConcertSlug(?string $concertSlug): self
     {
         $this->concertSlug = $concertSlug;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }
