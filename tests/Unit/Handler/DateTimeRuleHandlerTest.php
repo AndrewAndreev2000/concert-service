@@ -22,7 +22,7 @@ class DateTimeRuleHandlerTest extends TestCase
         $request->attributes->set('concertSlug', 'test');
 
         $redirectRule = new RedirectRule();
-        $redirectRule->setRedirectUrl('january');
+        $redirectRule->setRedirectUrl('concert-service/concert/test?month=january');
 
         $dateTimeRule = new DateTimeRule();
         $dateTimeRule->setStartDateTime(new DateTime('2025-01-01 00:00:00', new DateTimeZone('UTC')));
