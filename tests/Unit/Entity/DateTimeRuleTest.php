@@ -13,8 +13,6 @@ class DateTimeRuleTest extends TestCase
         $startDateTime = new \DateTime('2025-03-01 06:00:00');
         $endDateTime = new \DateTime('2025-03-01 11:00:00');
 
-
-
         $dateTimeRule->setStartDateTime($startDateTime);
         self::assertEquals($startDateTime, $dateTimeRule->getStartDateTime());
 

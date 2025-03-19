@@ -9,7 +9,7 @@ use DateTimeZone;
 
 class DateTimeRuleHandler implements RuleHandlerInterface
 {
-    public function supports(Rule $rule): bool
+    public function isApplicable(Rule $rule): bool
     {
         return $rule instanceof DateTimeRule;
     }
@@ -18,9 +18,7 @@ class DateTimeRuleHandler implements RuleHandlerInterface
     {
         /** @var DateTimeRule $dateTimeRule */
         $dateTimeRule = $rule;
-
         $userTime = $this->getUserTime($context);
-
         $startDateTime = $this->convertToUserTimezone($dateTimeRule->getStartDateTime(), $context->getTimezone());
         $endDateTime = $this->convertToUserTimezone($dateTimeRule->getEndDateTime(), $context->getTimezone());
 
@@ -31,21 +29,13 @@ class DateTimeRuleHandler implements RuleHandlerInterface
         return null;
     }
 
-    /**
-     * Получает текущее время пользователя с учётом его часового пояса.
-     */
     private function getUserTime(RuleContext $context): DateTime
     {
-        // Если часовой пояс пользователя передан в контексте, используем его
         $timezone = $context->getTimezone() ?? 'UTC';
 
-        // Получаем текущее время в часовом поясе пользователя
         return new DateTime('now', new DateTimeZone($timezone));
     }
 
-    /**
-     * Преобразует время из базы данных (UTC) в часовой пояс пользователя.
-     */
     private function convertToUserTimezone(DateTime $time, string $userTimezone): DateTime
     {
         $convertedTime = clone $time;

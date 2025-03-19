@@ -44,7 +44,7 @@ class RedirectRule
         return $this->concert;
     }
 
-    public function setConcert(?Concert $concert): static
+    public function setConcert(?Concert $concert): self
     {
         $this->concert = $concert;
 
@@ -56,7 +56,7 @@ class RedirectRule
         return $this->redirectUrl;
     }
 
-    public function setRedirectUrl(?string $redirectUrl): static
+    public function setRedirectUrl(?string $redirectUrl): self
     {
         $this->redirectUrl = $redirectUrl;
 
@@ -68,7 +68,7 @@ class RedirectRule
         return $this->rules;
     }
 
-    public function addRule(Rule $rule): static
+    public function addRule(Rule $rule): self
     {
         if (!$this->rules->contains($rule)) {
             $this->rules->add($rule);
@@ -78,7 +78,7 @@ class RedirectRule
         return $this;
     }
 
-    public function removeRule(Rule $rule): static
+    public function removeRule(Rule $rule): self
     {
         if ($this->rules->contains($rule)) {
             $this->rules->removeElement($rule);

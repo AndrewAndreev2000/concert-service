@@ -36,7 +36,7 @@ abstract class Rule
         return $this->redirectRule;
     }
 
-    public function setRedirectRule(?RedirectRule $redirectRule): static
+    public function setRedirectRule(?RedirectRule $redirectRule): self
     {
         $this->redirectRule = $redirectRule;
 

@@ -20,7 +20,7 @@ class DateTimeRule extends Rule
         return $this->startDateTime;
     }
 
-    public function setStartDateTime(?DateTime $startDateTime): static
+    public function setStartDateTime(?DateTime $startDateTime): self
     {
         $this->startDateTime = $startDateTime;
 
@@ -32,7 +32,7 @@ class DateTimeRule extends Rule
         return $this->endDateTime;
     }
 
-    public function setEndDateTime(?DateTime $endDateTime): static
+    public function setEndDateTime(?DateTime $endDateTime): self
     {
         $this->endDateTime = $endDateTime;
 

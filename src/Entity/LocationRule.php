@@ -10,85 +10,19 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class LocationRule extends Rule
 {
-    #[ORM\ManyToMany(targetEntity: Country::class)]
-    #[ORM\JoinTable(name: 'app_location_rule_country')]
-    private Collection $countries;
+    #[ORM\ManyToOne(targetEntity: City::class)]
+    #[ORM\JoinColumn(name: 'city_id', referencedColumnName: 'id', nullable: false)]
+    private ?City $city = null;
 
-    #[ORM\ManyToMany(targetEntity: Region::class)]
-    #[ORM\JoinTable(name: 'app_location_rule_region')]
-    private Collection $regions;
-
-    #[ORM\ManyToMany(targetEntity: City::class)]
-    #[ORM\JoinTable(name: 'app_location_rule_city')]
-    private Collection $cities;
-
-    public function __construct()
+    public function getCity(): ?City
     {
-        $this->countries = new ArrayCollection();
-        $this->regions = new ArrayCollection();
-        $this->cities = new ArrayCollection();
+        return $this->city;
     }
 
-    public function getCountries(): Collection
+    public function setCity(?City $city): self
     {
-        return $this->countries;
-    }
+        $this->city = $city;
 
-    public function addCountry(Country $country): static
-    {
-        if (!$this->countries->contains($country)) {
-            $this->countries->add($country);
-        }
-        return $this;
-    }
-
-    public function removeCountry(Country $country): static
-    {
-        if ($this->countries->contains($country)) {
-            $this->countries->removeElement($country);
-        }
-        return $this;
-    }
-
-    public function getRegions(): Collection
-    {
-        return $this->regions;
-    }
-
-    public function addRegion(Region $region): static
-    {
-        if (!$this->regions->contains($region)) {
-            $this->regions->add($region);
-        }
-        return $this;
-    }
-
-    public function removeRegion(Region $region): static
-    {
-        if ($this->regions->contains($region)) {
-            $this->regions->removeElement($region);
-        }
-        return $this;
-    }
-
-    public function getCities(): Collection
-    {
-        return $this->cities;
-    }
-
-    public function addCity(City $city): static
-    {
-        if (!$this->cities->contains($city)) {
-            $this->cities->add($city);
-        }
-        return $this;
-    }
-
-    public function removeCity(City $city): static
-    {
-        if ($this->cities->contains($city)) {
-            $this->cities->removeElement($city);
-        }
         return $this;
     }
 }

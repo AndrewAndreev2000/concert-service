@@ -48,12 +48,10 @@ services:
     app.redirect_service:
         class: App\Service\RedirectService
         arguments:
-            $redirectors: !tagged_iterator app.redirector
+            - app.service.concert_redirector
 
-    app.service_redirector:
+    app.service.concert_redirector:
         class: App\Service\ConcertRedirector
         arguments:
             $doctrine: '@doctrine'
             $ruleChainHandler: '@app.rule_chain_handler'
-        tags:
-            - { name: app.redirector }
