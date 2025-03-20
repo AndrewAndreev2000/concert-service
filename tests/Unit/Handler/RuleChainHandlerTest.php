@@ -28,8 +28,6 @@ class RuleChainHandlerTest extends TestCase
     {
         $firstHandler = self::createMock(RuleHandlerInterface::class);
         $secondHandler = self::createMock(RuleHandlerInterface::class);
-        $locationRule = self::createMock(LocationRule::class);
-        $dateTimeRule = self::createMock(DateTimeRule::class);
 
         $this->handlers = [$firstHandler, $secondHandler];
         $this->rules = new ArrayCollection([new LocationRule(), new DateTimeRule()]);
@@ -53,7 +51,10 @@ class RuleChainHandlerTest extends TestCase
             ->willReturn(true);
 
         $this->handlers[0]->expects(self::once())
-            ->method('handle');
+            ->method('handle')
+            ->with($this->rules[0], $ruleContext)
+            ->willReturn(null);
+
 
         self::assertEquals(null, $this->handler->process($redirectRule, $ruleContext));
     }
