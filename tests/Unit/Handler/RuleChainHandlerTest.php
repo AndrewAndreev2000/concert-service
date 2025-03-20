@@ -43,18 +43,14 @@ class RuleChainHandlerTest extends TestCase
 
         $ruleContext = new RuleContext($request);
         $redirectRule = self::createMock(RedirectRule::class);
-
+        $rules = new ArrayCollection([new LocationRule(), new DateTimeRule()]);
 
         $redirectRule->expects(self::once())
             ->method('getRules')
-            ->willReturn(new ArrayCollection([new LocationRule(), new DateTimeRule()]));
+            ->willReturn($rules);
 
         $this->handlers[0]->expects(self::once())
             ->method('isApplicable')
-            ->willReturn(true);
-
-        $this->handlers[0]->expects(self::once())
-            ->method('handle')
             ->willReturn(true);
 
         self::assertEquals(null, $this->handler->process($redirectRule, $ruleContext));
