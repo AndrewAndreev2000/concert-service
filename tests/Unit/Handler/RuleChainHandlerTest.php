@@ -2,6 +2,7 @@
 
 namespace App\Tests\Unit\Handler;
 
+use App\Entity\City;
 use App\Entity\DateTimeRule;
 use App\Entity\LocationRule;
 use App\Entity\RedirectRule;
@@ -30,14 +31,13 @@ class RuleChainHandlerTest extends TestCase
         $secondHandler = self::createMock(RuleHandlerInterface::class);
 
         $this->handlers = [$firstHandler, $secondHandler];
-        $this->rules = new ArrayCollection([new LocationRule(), new DateTimeRule()]);
+        $this->rules = new ArrayCollection([new LocationRule()]);
         $this->handler = new RuleChainHandler($this->handlers);
     }
 
-    public function testProcess(): void
+    public function testProcessWithNullResult(): void
     {
         $request = new Request;
-        $request->attributes->set('concertSlug', 'test');
 
         $ruleContext = new RuleContext($request);
         $redirectRule = self::createMock(RedirectRule::class);
@@ -57,5 +57,34 @@ class RuleChainHandlerTest extends TestCase
 
 
         self::assertEquals(null, $this->handler->process($redirectRule, $ruleContext));
+    }
+
+    public function testProcessWithNotNullResult(): void
+    {
+        $request = new Request;
+
+        $redirectRule = self::createMock(RedirectRule::class);
+        $redirectRule->expects(self::once())
+            ->method('getRules')
+            ->willReturn($this->rules);
+
+        $this->rules[0]->setRedirectRule(new RedirectRule());
+
+        $ruleContext = new RuleContext($request);
+
+        $this->handlers[0]->expects(self::once())
+            ->method('isApplicable')
+            ->with($this->rules[0])
+            ->willReturn(true);
+        $this->handlers[0]->expects(self::once())
+            ->method('handle')
+            ->with($this->rules[0], $ruleContext)
+            ->willReturn('/test');
+
+        $redirectRule->expects(self::once())
+            ->method('getRedirectUrl')
+            ->willReturn('/test');
+
+        self::assertEquals('/test', $this->handler->process($redirectRule, $ruleContext));
     }
 }
