@@ -18,7 +18,6 @@ class ConcertRedirectorTest extends TestCase
 {
     private ManagerRegistry $doctrine;
     private RuleChainHandler $ruleChainHandler;
-    private ParameterBag $requestAttributes;
     private ConcertRedirector $concertRedirector;
 
     private RedirectRuleRepository $redirectRuleRepository;
@@ -28,7 +27,6 @@ class ConcertRedirectorTest extends TestCase
     {
         $this->doctrine = self::createMock(ManagerRegistry::class);
         $this->ruleChainHandler = self::createMock(RuleChainHandler::class);
-        $this->requestAttributes = self::createMock(ParameterBag::class);
         $this->concertRedirector = new ConcertRedirector($this->doctrine, $this->ruleChainHandler);
         $this->redirectRuleRepository = self::createMock(RedirectRuleRepository::class);
     }
@@ -49,6 +47,7 @@ class ConcertRedirectorTest extends TestCase
         $request = new Request();
         $request->attributes->set('concertSlug', 'test');
         $context = new RuleContext($request);
+        $redirectRule = new RedirectRule();
 
         $this->doctrine->expects(self::once())
             ->method('getRepository')
@@ -57,7 +56,12 @@ class ConcertRedirectorTest extends TestCase
 
         $this->redirectRuleRepository->expects(self::once())
             ->method('findByConcertSlug')
-            ->with('test');
+            ->with('test')
+            ->willReturn([$redirectRule]);
+
+        $this->ruleChainHandler->expects(self::once())
+            ->method('process')
+            ->with($redirectRule, $context);
 
         assertNull($this->concertRedirector->getRedirectUrl($request));
     }
