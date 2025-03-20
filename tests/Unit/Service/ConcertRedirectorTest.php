@@ -32,6 +32,9 @@ class ConcertRedirectorTest extends TestCase
     public function testIsApplicable()
     {
         $request = new Request();
+
+        self::assertFalse($this->concertRedirector->isApplicable($request));
+
         $request->attributes->set('concertSlug', 'test');
 
         self::assertTrue($this->concertRedirector->isApplicable($request));
