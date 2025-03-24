@@ -1,0 +1,171 @@
+{% extends '@OroUI/actions/update.html.twig' %}
+
+{% oro_title_set({params : {"%entity.title%": entity.fullName }}) %}
+
+{% set formAction = form.vars.value.id ? path('app_customer_update', { 'id': form.vars.value.id }) : path('app_customer_create') %}
+
+{% set entityId = entity.id %}
+
+{% block navButtons %}
+    {% import '@OroUI/macros.html.twig' as UI %}
+
+    {% set html = UI.saveAndCloseButton({
+        'route': 'app_customer_view',
+        'params': {'id': '$id'}
+    }) %}
+
+    {% if is_granted('app_customer_create') %}
+        {% set html = html ~ UI.saveAndNewButton({
+            'route': 'app_customer_create'
+        }) %}
+    {% endif %}
+
+    {% if is_granted('app_customer_update') %}
+        {% set html = html ~ UI.saveAndStayButton({
+            'route': 'app_customer_update',
+            'params': {'id': '$id'}
+        }) %}
+    {% endif %}
+
+    {{ UI.dropdownSaveButton({'html': html}) }}
+    {{ UI.cancelButton(path('app_customer_index')) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if entityId %}
+        {% set breadcrumbs = {
+            'entity': entity,
+            'indexPath': path('app_customer_index'),
+            'indexLabel': 'app.customer.entity_plural_label'|trans,
+            'entityTitle': entity.fullName
+        } %}
+
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'app.customer.entity_label'|trans}) %}
+        {% include '@OroUI/page_title_block.html.twig' with { title: title } %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block breadcrumbs %}
+    {% import '@OroUI/macros.html.twig' as UI %}
+
+    {{ parent() }}
+{% endblock breadcrumbs %}
+
+{% block content_data %}
+    {% import '@OroUI/macros.html.twig' as UI %}
+
+    {% set id = 'app-customer-form' %}
+
+    {% set CustomerMainInfo %}
+        {{ form_row(form.customerFullName) }}
+        {{ form_row(form.shortName) }}
+
+        {% include '@Customer/Form/customerDetails.html.twig' with { form: form } %}
+
+        {{ form_row(form.signs) }}
+    {% endset %}
+
+    {% set subblocks = [{
+        'data': [CustomerMainInfo]
+    }] %}
+
+    {% if form.contacts is defined %}
+        {% set CustomerContactsInfo %}
+            {{ form_widget(form.contacts) }}
+        {% endset %}
+
+        {% set subblocks = subblocks|merge([{
+            'title': 'app.contact.entity_plural_label'|trans,
+            'data': [ CustomerContactsInfo ]
+        }]) %}
+    {% endif %}
+
+    {% set dataBlocks = [{
+        'title': 'General Information'|trans,
+        'subblocks': subblocks
+    }] %}
+
+    {% if form.customerDetails44 is defined %}
+        {% set CustomerDetails44Info %}
+            {{ form_widget(form.customerDetails44) }}
+        {% endset %}
+
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'app.customer.customerdetails44.entity_label'|trans,
+            'subblocks': [
+                {
+                    'data': [ CustomerDetails44Info ]
+                },
+            ]
+        }]) %}
+    {% endif %}
+
+    {% if form.customerDetails223 is defined %}
+        {% set CustomerDetails223Info %}
+            {{ form_widget(form.customerDetails223) }}
+        {% endset %}
+
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'app.customer.customerdetails223.entity_label'|trans,
+            'subblocks': [
+                {
+                    'data': [ CustomerDetails223Info ]
+                },
+            ]
+        }]) %}
+    {% endif %}
+
+    {% if form.customerDetailsEstate is defined %}
+        {% set CustomerDetailsEstateInfo %}
+            {{ form_widget(form.customerDetailsEstate) }}
+        {% endset %}
+
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'app.customer.customerdetailsestate.entity_label'|trans,
+            'subblocks': [
+                {
+                    'data': [ CustomerDetailsEstateInfo ]
+                },
+            ]
+        }]) %}
+    {% endif %}
+
+    {% if form.customerDetailsZmo is defined %}
+        {% set CustomerDetailsZmoInfo %}
+            {{ form_widget(form.customerDetailsZmo) }}
+        {% endset %}
+
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'app.customer.customerdetailszmo.entity_label'|trans,
+            'subblocks': [
+                {
+                    'data': [ CustomerDetailsZmoInfo ]
+                },
+            ]
+        }]) %}
+    {% endif %}
+
+    {% if form.customerDetails615 is defined %}
+        {% set CustomerDetails615Info %}
+            {{ form_widget(form.customerDetails615) }}
+        {% endset %}
+
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'app.customer.customerdetails615.entity_label'|trans,
+            'subblocks': [
+                {
+                    'data': [ CustomerDetails615Info ]
+                },
+            ]
+        }]) %}
+    {% endif %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks
+    } %}
+
+    {{ parent() }}
+{% endblock content_data %}

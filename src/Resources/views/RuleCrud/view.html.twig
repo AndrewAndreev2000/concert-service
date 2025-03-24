@@ -1,0 +1,166 @@
+
+{% block navButtons %}
+    {% placeholder view_navButtons with {entity: entity} %}
+    {% if is_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path' : path('app_customer_update', { id: entity.id }),
+            'entity_label': 'app.customer.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('app_customer_index'),
+        'indexLabel': 'app.customer.entity_plural_label'|trans,
+        'entityTitle': entity.fullName
+    } %}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block stats %}
+    {{ parent() }}
+
+    {% if is_granted('VIEW', entity, 'createdBy') %}
+        <li>{{ 'app.customer.created_by.label'|trans }}:
+            {{ breadcrumbs.entity.created_by is defined and breadcrumbs.entity.created_by.fullName
+            ? breadcrumbs.entity.created_by.fullName }}</li>
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+{% endblock breadcrumbs %}
+
+{% block content_data %}
+    {% set CustomerInfoWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('app_customer_info', { id: entity.id })
+        }) }}
+    {% endset %}
+
+    {% set generalInformation = [{'data' : [CustomerInfoWidget]}] %}
+
+    {% if entity.defaultContact and is_granted('app_contact_view') %}
+        {% set customerDefaultContactInfoWidget %}
+            <div class="contact-widget-wrapper">
+                {{ oro_widget_render({
+                    'widgetType': 'block',
+                    'url': path('app_customer_widget_default_contact', {id: entity.id}),
+                }) }}
+            </div>
+        {% endset %}
+
+        {% set generalInformation = generalInformation|merge(
+            [{'data': [customerDefaultContactInfoWidget]}]
+        ) %}
+    {% endif %}
+
+    {% set customerContactsDatagridWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('app_customer_widget_contacts', { id: entity.id }),
+        }) }}
+    {% endset %}
+
+    {% set customerContactsDatagrid = [{'data' : [customerContactsDatagridWidget]}] %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General Information'|trans,
+            'subblocks': generalInformation
+        },
+        {
+            'title': 'app.customer.contacts.label'|trans,
+            'subblocks': customerContactsDatagrid
+        },
+    ] %}
+
+    {% if entity.customerDetails44 is not same as null %}
+        {% set customerDetails44InfoWidget %}
+            {{ oro_widget_render({
+                'widgetType': 'block',
+                'url': path('app_customer_details_44_info', { id: entity.id }),
+            }) }}
+        {% endset %}
+
+        {% set customerDetails44Info = [{'data' : [customerDetails44InfoWidget]}] %}
+
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'app.customer.customerdetails44.entity_label'|trans,
+            'subblocks': customerDetails44Info
+        }]) %}
+    {% endif %}
+
+    {% if entity.customerDetails223 is not same as null %}
+        {% set customerDetails223InfoWidget %}
+            {{ oro_widget_render({
+                'widgetType': 'block',
+                'url': path('app_customer_details_223_info', { id: entity.id }),
+            }) }}
+        {% endset %}
+
+        {% set customerDetails223Info = [{'data' : [customerDetails223InfoWidget]}] %}
+
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'app.customer.customerdetails223.entity_label'|trans,
+            'subblocks': customerDetails223Info
+        }]) %}
+    {% endif %}
+
+    {% if entity.customerDetailsEstate is not same as null %}
+        {% set customerDetailsEstateInfoWidget %}
+            {{ oro_widget_render({
+                'widgetType': 'block',
+                'url': path('app_customer_details_estate_info', { id: entity.id }),
+            }) }}
+        {% endset %}
+
+        {% set customerDetailsEstateInfo = [{'data' : [customerDetailsEstateInfoWidget]}] %}
+
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'app.customer.customerdetailsestate.entity_label'|trans,
+            'subblocks': customerDetailsEstateInfo
+        }]) %}
+    {% endif %}
+
+    {% if entity.customerDetailsZmo is not same as null %}
+        {% set customerDetailsZmoInfoWidget %}
+            {{ oro_widget_render({
+                'widgetType': 'block',
+                'url': path('app_customer_details_zmo_info', { id: entity.id }),
+            }) }}
+        {% endset %}
+
+        {% set customerDetailsZmoInfo = [{'data' : [customerDetailsZmoInfoWidget]}] %}
+
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'app.customer.customerdetailszmo.entity_label'|trans,
+            'subblocks': customerDetailsZmoInfo
+        }]) %}
+    {% endif %}
+
+    {% if entity.customerDetails615 is not same as null %}
+        {% set customerDetails615InfoWidget %}
+            {{ oro_widget_render({
+                'widgetType': 'block',
+                'url': path('app_customer_details_615_info', { id: entity.id }),
+            }) }}
+        {% endset %}
+
+        {% set customerDetails615Info = [{'data' : [customerDetails615InfoWidget]}] %}
+
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'app.customer.customerdetails615.entity_label'|trans,
+            'subblocks': customerDetails615Info
+        }]) %}
+    {% endif %}
+
+    {% set id = 'customerView' %}
+    {% set data = { 'dataBlocks': dataBlocks } %}
+
+    {{ parent() }}
+{% endblock content_data %}

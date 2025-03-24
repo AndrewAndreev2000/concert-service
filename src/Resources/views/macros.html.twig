@@ -1,0 +1,24 @@
+{% macro renderCollectionElements(collection, propertyName) %}
+
+    {% set elements = [] %}
+
+    {% for element in collection %}
+        {% set elements = elements|merge([element]) %}
+    {% endfor %}
+
+    <ul class="extra-list">
+        {%- for element in elements %}
+            <li class="collection-element">
+                {{ attribute(element, propertyName) }}
+            </li>
+        {% endfor -%}
+    </ul>
+{% endmacro %}
+
+{% macro renderBooleanPropertyValue(value) %}
+    {{- value ? 'Yes'|trans : 'No'|trans -}}
+{% endmacro %}
+
+{% macro renderBooleanPropertyValue(value) %}
+    {{- value ? 'Yes'|trans : 'No'|trans -}}
+{% endmacro %}
