@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\LocationRule;
 use App\Entity\Rule;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -38,7 +39,7 @@ class RuleCrudController extends AbstractController
     #[Template('@Rule/RuleCrud/update.html.twig')]
     public function createAction(Request $request): Response|array
     {
-        $rule = new Rule();
+        $rule = new LocationRule();
     }
 
     /**

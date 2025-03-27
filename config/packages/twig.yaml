@@ -3,6 +3,9 @@ twig:
     paths:
         '%kernel.project_dir%/src/Resources/views/RuleCrud': RuleCrud
         '%kernel.project_dir%/src/Resources/views/Rule': Rule
+        '%kernel.project_dir%/src/Resources/views/RedirectRuleCrud': RedirectRuleCrud
+        '%kernel.project_dir%/src/Resources/views/RedirectRule': RedirectRule
+    form_themes: ['bootstrap_5_layout.html.twig']
 
 when@test:
     twig:
